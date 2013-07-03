@@ -38,7 +38,12 @@ func (a *Args) Argc() rune {
 //
 // It must not be called multiple times for the same argument.
 func (a *Args) Argf() (string, bool) {
-	cur := a.cur
+	var cur string
+	if a.cur[0] == '=' {
+		cur = a.cur[1:]
+	} else {
+		cur = a.cur
+	}
 	a.cur = ""
 	if cur == "" {
 		if len(a.s) > 0 {
@@ -81,8 +86,13 @@ func (a *Args) Next() bool {
 			a.s = a.s[1:]
 			fallthrough
 		case a.s[0] == "-" || !strings.HasPrefix(a.s[0], "-"):
-			a.c = -1
-			return false
+			if a.s[1][0] == ' ' {
+				a.c = '-'
+				return true
+			} else {
+				a.c = -1
+				return false
+			}
 		}
 		a.cur = a.s[0][1:]
 		a.s = a.s[1:]
