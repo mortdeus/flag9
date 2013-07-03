@@ -39,7 +39,7 @@ func (a *Args) Argc() rune {
 // It must not be called multiple times for the same argument.
 func (a *Args) Argf() (string, bool) {
 	var cur string
-	if a.cur[0] == '=' {
+	if len(a.cur) != 0 && a.cur[0] == '=' {
 		cur = a.cur[1:]
 	} else {
 		cur = a.cur
